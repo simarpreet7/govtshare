@@ -1,0 +1,1055 @@
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Word Editor <%= doc_text.document_name %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../public/assets/projectLogo.ico" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../public/assets/stylesheet_word.css"
+    />
+    <link
+      href="
+            https://fonts.googleapis.com/icon?family=Roboto|Patua+One|Source+Sans+Pro|Zilla+Slab|Material+Icons|Material+Icons+Round|Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="/socket.io/socket.io.js"></script>
+          <script>
+          
+          </script>
+    <script type="text/javascript" src="../public/js/script_word.js">
+      createEditableSelect(document.forms[0].myText);
+    </script>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,300italic,400italic,500,500italic,700,700italic' type='text/css'>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.teal-red.min.css" />
+
+		<link rel="stylesheet" href="../public/assets/demo.css">
+  </head>
+
+  <body>
+    <div id="header">
+      <div class="logo-icon">
+        <img
+          src="../public/assets/icons_word/logo.png"
+          width="38px"
+          draggable="false"
+        />
+      </div>
+      <div class="logo-text" style="width: auto">
+        <input
+          type="text"
+          name="docame"
+          id="docsname"
+          style="height: 30px; font-size: 20px; color: #1565c0; font-family: 'Patua One', cursive; width:200px; margin: 4px 0 0 5px; border: 0px solid transparent; background-color: transparent; color: black;"
+          value="<%= doc_text.document_name %>.doc"
+          
+        /> 
+      </div>
+
+      <div id="utility" style="float: right;">
+        <div class="download-doc" style="margin: 0;">
+          <div class="icon">
+            <img
+              src="../public/assets/icons_word/logout.png"
+              color="white"
+              width="24px"
+              draggable="false"
+            />
+          </div>
+          <div class="text">
+            <a
+              href="/logout"
+              style="color: #1565c0; font-family: 'Patua One', cursive; text-decoration: none;"
+              >Logout!</a
+            >
+          </div>
+        </div>
+
+        <div class="print-doc">
+          <div class="icon">
+            <img
+              src="../public/assets/icons_word/print.svg"
+              color="white"
+              width="28px"
+              draggable="true"
+            />
+          </div>
+
+          <div class="text" onclick="viewMenu()">Print</div>
+        </div>
+        <div class="hide-menu" onclick="changeName(this)">Hide Menu</div>
+      </div>
+    </div>
+
+    <div id="menu">
+      <!-- <span
+        style="width: 0px; height: 27px; border: 1px solid #dddddd; margin: 7px 10px 0 10px; border-radius: 1px;"
+      ></span> -->
+      <span
+      style="width: 0px; height: 27px; border: 1px solid white; margin: 7px 5px 0 5px; border-radius: 1px;"
+    ></span>
+      <div class="new">
+        <button
+        class="icon"
+        onclick="downloading();"
+     
+        style="background-color: white;border:0px;"
+        onmouseover="viewPopup('new-popup')"
+        onmouseout="hidePopup('new-popup')"
+      >
+    
+        <span class="popuptext" id="new-popup">Download</span>
+          <img
+            src="../public/assets/icons_word/download.svg"
+            width="35px"
+            draggable="false"
+            style="transform: scaleY(-1);"
+          />
+        </button>
+        <!-- <div class="text">New</div> -->
+      </div>
+
+      <form method="POST"> 
+        <div class="save">
+          <button
+            class="icon"
+            onclick="f();"
+            type="submit"
+            style="background-color: white;border:0px;"
+            onmouseover="viewPopup('save-popup')"
+            onmouseout="hidePopup('save-popup')"
+          >
+            <span class="popuptext" id="save-popup">Save</span>
+            <img
+              src="../public/assets/icons_word/save.svg"
+              width="35px"
+              draggable="false"
+            />
+          </button>
+        </div>
+
+        <input
+          type="text"
+          name="fname"
+          id="h"
+          style="visibility:hidden;height: 0px;width:0px;"
+        />
+
+        <input
+          type="text"
+          id="orignal_name"
+          style="visibility:hidden;height: 0px;width:0px;"
+          value="<%= doc_text.document_name %>"
+        />
+
+        <input
+          type="text"
+          id="orignal_checker2"
+          style="visibility:hidden;height: 0px;width:0px;"
+          value="<%= doc_text.created_by %>"
+        />
+        <input
+          type="text"
+          id="orignal_checker"
+          style="visibility:hidden;height: 0px;width:0px;"
+          value="<%= user_name %>"
+        />
+
+        <input
+          type="text"
+          name="save_fname"
+          id="saver"
+          style="visibility:hidden;height: 0px;width:0px;"
+          value=<%= doc_text.document_name %>
+        />
+      </form>
+
+      <div class="open">
+        <button
+          onclick="window.location.replace('/drive')"
+          style="background-color: white; border:0px;"
+        >
+          <div class="icon" 
+          onmouseover="viewPopup('open-popup')"
+          onmouseout="hidePopup('open-popup')">
+          <span class="popuptext" id="open-popup">Open</span>
+            <img
+              src="../public/assets/icons_word/open.svg"
+              width="35px"
+              style="justify-content: center;"
+              draggable="false"
+            />
+          </div>
+        </button>
+        <!-- <div class="text">Open</div> -->
+      </div>
+
+      <span
+        style="width: 0px; height: 27px; border: 1px solid #dddddd; margin: 7px 10px 0 10px; border-radius: 1px;"
+      ></span>
+
+    
+
+      <div class="undo">
+        <div class="icon" onclick="document.execCommand('undo', false, null);"
+          onmouseover="viewPopup('undo-popup')"
+          onmouseout="hidePopup('undo-popup')"
+        >
+          <span class="popuptext" id="undo-popup">Undo</span>
+          <img
+            src="../public/assets/icons_word/undo.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Undo</div> -->
+      </div>
+
+      <div class="redo">
+        <div
+          class="icon"
+          onclick="document.execCommand('redo', false, null);"
+          onmouseover="viewPopup('redo-popup')"
+          onmouseout="hidePopup('redo-popup')"
+        >
+          <span class="popuptext" id="redo-popup">Redo</span>
+          <img
+            src="../public/assets/icons_word/redo.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Redo</div> -->
+      </div>
+
+      <span
+        style="width: 0px; height: 27px; border: 1px solid #dddddd; margin: 7px 10px 0 10px; border-radius: 1px;"
+      ></span>
+
+      <div class="text-format">
+        <div class="icon" onclick="viewPanel('format-text-panel')" onmouseover="viewPopup('format-text-popup')"
+        onmouseout="hidePopup('format-text-popup')"
+        >
+          <span class="popuptext" id="format-text-popup">Fornat Text</span>
+          <img
+            src="../public/assets/icons_word/text-format.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Format Text</div> -->
+      </div>
+
+      <div class="image">
+        <div class="icon" onclick="viewPanel('format-text-panel-2')" onmouseover="viewPopup('format-image-popup')"
+        onmouseout="hidePopup('format-image-popup')"
+        >
+          <span class="popuptext" id="format-image-popup">Format Image</span>
+          <img
+            src="../public/assets/icons_word/image.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Image</div> -->
+      </div>
+      <!--https://www.w3schools.com/howto/howto_css_image_effects.asp-->
+
+      <div class="table">
+        <div class="icon" onmouseover="viewPopup('table-popup')"
+        onmouseout="hidePopup('table-popup')"
+        >
+          <span class="popuptext" id="table-popup">Format Table</span>
+          <img
+            src="../public/assets/icons_word/table.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Table</div> -->
+      </div>
+
+      <span
+        style="width: 0px; height: 27px; border: 1px solid #dddddd; margin: 7px 10px 0 10px; border-radius: 1px;"
+      ></span>
+
+      <div class="link">
+        <div class="icon" onmouseover="viewPopup('link-popup')"
+        onmouseout="hidePopup('link-popup')"
+        >
+          <span class="popuptext" id="link-popup">Hyperlink</span>
+          <img
+            src="../public/assets/icons_word/link.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Link</div> -->
+      </div>
+
+      <div class="bookmark">
+        <div class="icon" onmouseover="viewPopup('bookmark-popup')"
+        onmouseout="hidePopup('bookmark-popup')"
+        >
+          <span class="popuptext" id="bookmark-popup">Bookmark</span>
+          <img
+            src="../public/assets/icons_word/bookmark.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Bookmark</div> -->
+      </div>
+
+      <span
+        style="width: 0px; height: 27px; border: 1px solid #dddddd; margin: 7px 10px 0 10px; border-radius: 1px;"
+      ></span>
+
+      <div class="page-header-footer">
+        <div class="icon" onmouseover="viewPopup('page-header-footer-popup')"
+        onmouseout="hidePopup('page-header-footer-popup')"
+        >
+          <span class="popuptext" id="page-header-footer-popup">Header Footer</span>
+          <img
+            src="../public/assets/icons_word/image.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Header Footer</div> -->
+      </div>
+
+      <div class="page-setup">
+        <div class="icon" onmouseover="viewPopup('page-setup-popup')"
+          onmouseout="hidePopup('page-setup-popup')"
+        >
+          <span class="popuptext" id="page-setup-popup">Page Setup</span>
+          <img
+            src="../public/assets/icons_word/page_setup.png"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Page Setup</div> -->
+      </div>
+
+      <div class="page-number">
+        <div class="icon" onmouseover="viewPopup('page-number-popup')"
+          onmouseout="hidePopup('page-number-popup')"
+        >
+          <span class="popuptext" id="page-number-popup">Page #</span>
+          <img
+            src="../public/assets/icons_word/page_number.png"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Page Number</div> -->
+      </div>
+
+      <div class="break">
+        <div class="icon" onmouseover="viewPopup('page-break-popup')"
+          onmouseout="hidePopup('page-break-popup')"
+        >
+          <span class="popuptext" id="page-break-popup">Page Break</span>
+          <img
+            src="../public/assets/icons_word/image.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Add Page</div> -->
+      </div>
+
+      <span
+        style="width: 0px; height: 27px; border: 1px solid #dddddd; margin: 7px 10px 0 10px; border-radius: 1px;"
+      ></span>
+
+      <div class="find">
+        <div class="icon" 
+          onclick="findInText()"
+          onmouseover="viewPopup('find-popup')"
+          onmouseout="hidePopup('find-popup')"
+        >
+          <span class="popuptext" id="find-popup">Find</span>
+          <img
+            src="../public/assets/icons_word/find.svg"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+        <!-- <div class="text">Find</div> -->
+      </div>
+
+      <div class="access">
+        <div class="icon" onclick="viewSelectionPane()" onmouseover="viewPopup('access-popup')"
+        onmouseout="hidePopup('access-popup')"
+      >
+        <span class="popuptext" id="access-popup">Sharing</span>
+          <img
+            src="../public/assets/icons_word/access.png"
+            width="35px"
+            draggable="false"
+          />
+        </div>
+
+        <!-- <div class="text">Access</div> -->
+      </div>
+      
+      <span
+      style="width: 0px; height: 27px; border: 1px solid white; margin: 7px 5px 0 5px; border-radius: 1px;"
+    ></span>
+      <!-- <span
+        style="width: 0px; height: 27px; border: 1px solid #dddddd; margin: 7px 10px 0 10px; border-radius: 1px;"
+      ></span> -->
+    </div>
+
+    <div id="panel">
+      <div id="format-text-panel" style="z-index: 1;">
+        <fieldset>
+          <div class="panel-headings">Image Formatting</div>
+          <div class="panel-headings">Text</div>
+          <span class="br"></span>
+
+          <select id="input-font" class="input" onchange="changeFont(this);">
+            <option value="Arial">Arial</option>
+            <option value="Helvetica" selected>Helvetica</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Sans serif">Sans serif</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Palatino">Palatino</option>
+            <option value="Garamond">Garamond</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Arial Black">Arial Black</option>
+            <option value="Tahoma">Tahoma</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+          </select>
+
+          <!-- font size start -->
+          <select id="fontSize" onchange="changeSize()">
+            <option value="9px">8</option>
+            <option value="2px">10</option>
+            <option value="3px">14</option>
+            <option value="4">18</option>
+            <option value="5">24</option>
+            <option value="6">36</option>
+            <option value="7">48</option>
+            <option value="8">72</option>
+          </select>
+          <!-- font size end -->
+          <span class="brmedium"></span>
+
+          <button
+            class="fontStyle bold"
+            onclick="document.execCommand('bold', false, null);"
+            title="Bold"
+          ></button>
+
+          <button
+            class="fontStyle italic"
+            onclick="document.execCommand('italic', false, null);"
+            title="Italics"
+          ></button>
+
+          <button
+            class="fontStyle underline"
+            onclick="document.execCommand('underline', false, null);"
+          ></button>
+
+          <button
+            class="fontStyle strikethrough"
+            onclick="document.execCommand('strikethrough', false, null);"
+          >
+            <strikethrough></strikethrough>
+          </button>
+
+          <button
+            class="fontStyle align-left"
+            onclick="document.execCommand('increaseFontSize', false, null);"
+          >
+            <increaseFontSize></increaseFontSize>
+          </button>
+
+          <button
+            class="fontStyle align-left"
+            onclick="document.execCommand('decreaseFontSize', false, null);"
+          >
+            <decreaseFontSize></decreaseFontSize>
+          </button>
+
+          <span class="brlarge"></span>
+
+          <div class="panel-headings">Paragraph</div>
+
+          <button
+            class="fontStyle align-left"
+            onclick="document.execCommand('justifyLeft', false, null);"
+          >
+            <justifyLeft></justifyLeft>
+          </button>
+
+          <button
+            class="fontStyle align-center"
+            onclick="document.execCommand('justifyCenter', false, null);"
+          >
+            <justifyCenter></justifyCenter>
+          </button>
+
+          <button
+            class="fontStyle align-right"
+            onclick="document.execCommand('justifyRight', false, null);"
+          >
+            <justifyRight></justifyRight>
+          </button>
+
+          <button
+            class="fontStyle align-justify"
+            onclick="document.execCommand('justifyFull', false, null);"
+          >
+            <justifyFull></justifyFull>
+          </button>
+
+          <button
+            class="fontStyle undo-apply"
+            onclick="document.execCommand('undo', false, null);"
+          >
+            <undo></undo>
+          </button>
+
+          <button
+            class="fontStyle redo-apply"
+            onclick="document.execCommand('redo', false, null);"
+          >
+            <redo></redo>
+          </button>
+
+          <button class="fontStyle copy-view" onclick="viewer()"></button>
+
+          <span class="br"></span>
+
+          <button
+            class="fontStyle orderedlist"
+            onclick="document.execCommand('insertOrderedList', false, null);"
+          >
+            <insertOrderedList></insertOrderedList>
+          </button>
+
+          <button
+            class="fontStyle unorderedlist"
+            onclick="document.execCommand('insertUnorderedList',false, null)"
+          >
+            <insertUnorderedList></insertUnorderedList>
+          </button>
+
+          <input
+            class="color-apply"
+            type="color"
+            onchange="chooseColor()"
+            id="myColor"
+          />
+        </fieldset>
+      </div>
+
+      <div id="format-image-panel" style="z-index: 20;">
+        <fieldset>
+          <div class="panel-headings">Text Formatting</div>
+          <div class="panel-headings">Text</div>
+          <span class="br"></span>
+
+          <select id="input-font" class="input" onchange="changeFont(this);">
+            <option value="Arial">Arial</option>
+            <option value="Helvetica" selected>Helvetica</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Sans serif">Sans serif</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Palatino">Palatino</option>
+            <option value="Garamond">Garamond</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Arial Black">Arial Black</option>
+            <option value="Tahoma">Tahoma</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+          </select>
+
+          <!-- font size start -->
+          <select id="fontSize" onchange="changeSize()">
+            <option value="9">8</option>
+            <option value="2">10</option>
+            <option value="3">14</option>
+            <option value="4">18</option>
+            <option value="5">24</option>
+            <option value="6">36</option>
+            <option value="7">48</option>
+            <option value="8">72</option>
+          </select>
+          <!-- font size end -->
+          <span class="brmedium"></span>
+
+          <button
+            class="fontStyle bold"
+            onclick="document.execCommand('bold', false, null);"
+            title="Bold"
+          ></button>
+
+          <button
+            class="fontStyle italic"
+            onclick="document.execCommand('italic', false, null);"
+            title="Italics"
+          ></button>
+
+          <button
+            class="fontStyle underline"
+            onclick="document.execCommand('underline', false, null);"
+          ></button>
+
+          <button
+            class="fontStyle strikethrough"
+            onclick="document.execCommand('strikethrough', false, null);"
+          >
+            <strikethrough></strikethrough>
+          </button>
+
+          <button
+            class="fontStyle align-left"
+            onclick="document.execCommand('increaseFontSize', false, null);"
+          >
+            <increaseFontSize></increaseFontSize>
+          </button>
+
+          <button
+            class="fontStyle align-left"
+            onclick="document.execCommand('decreaseFontSize', false, null);"
+          >
+            <decreaseFontSize></decreaseFontSize>
+          </button>
+
+          <span class="brlarge"></span>
+
+          <div class="panel-headings">Paragraph</div>
+
+          <button
+            class="fontStyle align-left"
+            onclick="document.execCommand('justifyLeft', false, null);"
+          >
+            <justifyLeft></justifyLeft>
+          </button>
+
+          <button
+            class="fontStyle align-center"
+            onclick="document.execCommand('justifyCenter', false, null);"
+          >
+            <justifyCenter></justifyCenter>
+          </button>
+
+          <button
+            class="fontStyle align-right"
+            onclick="document.execCommand('justifyRight', false, null);"
+          >
+            <justifyRight></justifyRight>
+          </button>
+
+          <button
+            class="fontStyle align-justify"
+            onclick="document.execCommand('justifyFull', false, null);"
+          >
+            <justifyFull></justifyFull>
+          </button>
+
+          <button
+            class="fontStyle undo-apply"
+            onclick="document.execCommand('undo', false, null);"
+          >
+            <undo></undo>
+          </button>
+
+          <button
+            class="fontStyle redo-apply"
+            onclick="document.execCommand('redo', false, null);"
+          >
+            <redo></redo>
+          </button>
+
+          <button class="fontStyle copy-view" onclick="viewer()"></button>
+
+          <span class="br"></span>
+
+          <button
+            class="fontStyle orderedlist"
+            onclick="document.execCommand('insertOrderedList', false, null);"
+          >
+            <insertOrderedList></insertOrderedList>
+          </button>
+
+          <button
+            class="fontStyle unorderedlist"
+            onclick="document.execCommand('insertUnorderedList',false, null)"
+          >
+            <insertUnorderedList></insertUnorderedList>
+          </button>
+
+          <input
+            class="color-apply"
+            type="color"
+            onchange="chooseColor()"
+            id="myColor"
+          />
+        </fieldset>
+      </div>
+
+      <div id="format-text-panel-2" style="z-index: 30;">
+        <div>
+          Siddhant, add you functionalities of the image formatting here
+          <div id="IMG"></div>
+          <div>
+            <button onclick="createImage()">
+              Add Image.
+              <!-- <img src="copy.png"/> -->
+            </button>
+          </div>
+          <!-- <div id="Y"></div> -->
+          <div>
+            <button onclick="changeSize()">
+              Resize
+            </button>
+          </div>
+          <div>
+            <button onclick="changeBorder()">
+              changeBorder
+            </button>
+          </div>
+          <div>
+            <button onclick="changeBorderColor()">
+              changeBorderColor
+            </button>
+            <input type="color" id="get" />
+          </div>
+          <div>
+            <button onclick="rotateLeft()">
+              rotateLeft
+            </button>
+          </div>
+          <div>
+            <button onclick="rotateRight()">
+              rotateRight
+          </div>
+          <div>
+            <button onclick="zoomIn()">
+              zoomIn
+            </button>
+          </div>
+          <div>
+            <button onclick="zoomOut()">
+              zoomOut
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="copy-panel" style="visibility: hidden;">
+        <div class="panel-headings">Paste</div>
+        <div class="panel-headings">Copied Text</div>
+        <p id="copied-text">Pasted Here</p>
+      </div>
+    </div>
+
+    <div id="content">
+      <div id="resize-table" onclick="resizeTable()"></div>
+
+
+
+
+
+      <!-- imp -->
+      <!-- <div
+        id="editor1"
+        contenteditable="true"
+        name="imp"
+        style="outline: 0 solid transparent;height: 100%"
+        onchange="god();"
+        oninput="this.onchange();"
+        
+      >
+        <%- doc_text.name %>
+      </div> -->
+      <section class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" style="z-index: 0;">
+        <section class="mdl-card mdl-cell mdl-cell--12-col">
+          <div class="realtimeWrapper">
+            <% if(y==-1){%>
+              <div id="editor1" style="pointer-events: none;" class="realtimeEditor is-focused" ondragstart="return false" contenteditable="false" spellcheck="false"><%- doc_text.name %></div></section>
+              <%}else{%>
+     
+  
+            <div id="editor1" class="realtimeEditor is-focused" ondragstart="return false" contenteditable="false" spellcheck="false"><%- doc_text.name %></div></section>
+            <%}%>
+      </section>
+  
+          
+         
+
+
+
+
+
+
+
+
+    </div>
+    <% if(y==1){%>
+     
+  
+       
+      
+    <div id="share-selection-pane">
+      <div id="close-button"
+        style="position: absolute; right: 10px; top: 10px; z-index: 12; cursor: pointer;"
+        onclick="hideSelectionPane()"
+      >
+        &#x274C
+      </div>
+      <form onload="storeRadioOutput('r')" method="POST" action="/word/add/<%= doc_text._id %>">
+        <!-- <label for="officialName"><b>Name:</b></label>
+        <input
+          type="text"
+          placeholder="Enter Name"
+          id="officialName"
+          style="margin-left:60px;"
+          required
+        />
+        <span class="br"></span> -->
+        <label for="email"><b>Email:</b></label>
+        <input
+          type="email"
+          placeholder="Enter Email"
+          id="email"
+          style="margin-left:60px;"
+          required
+          name="etext"
+          value=""
+        />
+        <input
+        type="text"
+        name="ki"
+        id="somya"
+        style="visibility:hidden;height: 0px;width:0px;"
+        value="<%= doc_text.document_name %>""
+      />
+        <!-- <script type="text/javascript">
+          document.getElementById("email").value = 'dummy';
+        </script> -->
+  
+        <span class="br"></span>
+        <!-- <label for="officeDept"><b>Office/Dept:</b></label>
+          <input
+          type="text"
+          placeholder="Enter Office/Dept"
+          id="officeDept"
+          style="margin-left:15px;"
+          required
+          />
+        <span class="br"></span> -->
+        <!-- <label for="group"><b>Doc Name:</b></label>
+        <input
+          type="text"
+          placeholder="Enter Name of Document"
+          id="group"
+          style="margin-left:25px;"
+          required
+        /> -->
+       
+        <span class="brmedium"></span>
+        <label for="group"><b>Access Rights:</b></label>
+        <input type="radio" id="readable"
+        name="accesspermission" value="r" checked="checked" onclick="storeRadioOutput(this.value)">
+        <label for="contactChoice1">Read</label>
+        <input type="radio" id="writable"
+        name="accesspermission" value="w" onclick="storeRadioOutput(this.value)">
+        <label for="contactChoice2">Write</label>
+        <input type="radio" id="shareable"
+        name="accesspermission" value="su" onclick="storeRadioOutput(this.value)">
+        <label for="contactChoice3">Write & Share</label>
+        <button id="add-member"  type="submit">Add</button>
+        <!-- onclick="addMember()" -->
+        <!-- <button id="view-existing-groups" onclick="viewGroups()">View Groups</button> -->
+      </form>
+      <span class="br"></span>
+      <table id="share-table-new" class="sharing-material-table">
+        <thead>
+          <th style="width: auto; padding-left: 10px;">Email</th>
+          <th style="width: 30px; text-align: center;">O</th>
+          <th style="width: 30px; text-align: center;">R</th>
+          <th style="width: 30px; text-align: center;">W</th>
+          <th style="width: 30px; text-align: center;">WS</th>
+          <th style="width: 30px; text-align: center;">
+            <img src="../public/assets/icons_word/delete.png" style="width: 20px; height: 20px"/>
+          </th>
+        </thead>
+        <tbody>
+       
+         
+          <% for(var i = 0; i < _share.length; i++) { %>
+            <tr>
+              <td><%= _share[i].user_id %></td>
+              
+              <% if(_share[i].permission=="r"){ %>
+                <td style="text-align: center;"></tdtext-align: center;>
+                <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;">                   <a id="myAnchor-<%=i%>"  style="text-decoration: none;"  href="/word/add/<%= _share[i].user_id %>/delete/<%= doc_text._id %>">&#x274C</a></td>
+              <% } %>    
+              <% if(_share[i].permission=="o"){ %>
+                <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                <td style="text-align: center;"></tdtext-align: center;>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+              <% } %> 
+             
+              <% if(_share[i].permission=="w"){ %>
+                <td style="text-align: center;"></tdtext-align: center;>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;">                   <a id="myAnchor-<%=i%>"  style="text-decoration: none;"  href="/word/add/<%= _share[i].user_id %>/delete/<%= doc_text._id %>">&#x274C</a></td>
+              <% } %>
+              <% if(_share[i].permission=="su"){ %>
+                <td style="text-align: center;"></tdtext-align: center;>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;"></td>
+                <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                  <td style="text-align: center;">      <a id="myAnchor-<%=i%>"  style="text-decoration: none;"  href="/word/add/<%= _share[i].user_id %>/delete/<%= doc_text._id %>">&#x274C</a></td>
+              <% } %> 
+             
+            </tr>
+          <% } %>
+          
+        </tbody> 
+     
+      </table>
+    </div>
+    <% } %>  
+    <div id="footer">
+      <p>
+        <span style="position: absolute; left: 5px;">
+          &copy; 2019. ShareDocs Word Editor,</span
+        >
+        <span style="position: absolute; right: 15px;">
+          Works best with Google Chrome
+        </span>
+      </p>
+    </div>
+    <% if (x==1){ %>
+    <script type="text/javascript">
+      alert("<%= doc_text.document_name %> name already exist try another!");
+    </script>
+    <% } %>
+    <input
+    type="text"
+    id="is_new_doc"
+    style="visibility:hidden;height: 0px;width:0px;"
+    value="<%= newd %>"
+  />
+
+   <!-- sockets scripts -->
+    <script src="../public/socket.io-client/dist/socket.io.min.js"></script>
+		<script src="../public/realtime-editor/realtime-editor.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
+    <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    
+    <script>
+  
+      var socket = io.connect();
+      function getHash(input){
+          var hash = 0, len = input.length;
+          for (var i = 0; i < len; i++) {
+            hash  = ((hash << 5) - hash) + input.charCodeAt(i);
+            hash |= 0; // to 32bit integer
+          }
+          return hash;
+        }
+      var isnewdoc=document.getElementById("is_new_doc").value;
+			var doce_name=document.getElementById("orignal_name").value;
+			var usercurrent=document.getElementById("orignal_checker").value;
+			var creator=document.getElementById("orignal_checker2").value;
+							var d=document.getElementById('editor1');
+							var r=String(d.innerHTML)
+					
+							var str=Array.from(r);
+							var arr=[];
+							var j=0;
+							arr[j]='';
+							for(var i=0;i<str.length;++i){
+								
+								if(str[i]=='<'&&str[i+1]=='b'&&str[i+2]=='r'&&str[i+3]=='>'){
+								++j;
+								arr[j]='';
+								i+=3;
+								}
+								else
+								{
+									
+									arr[j]+=String(str[i]);
+									
+								}
+              }
+              var loca=window.location.pathname;
+              
+							var editor1 = {
+								id: 'editor1',
+								projectId: getHash(creator+doce_name),
+								room: 'project1'+creator+doce_name,
+								text:[{author:String,text:String,id:String}],
+			
+                  
+								custom: {
+									referenceId: 111,
+                  componentId: 222,
+                  user_of_document:usercurrent,
+                  document_name_:doce_name,
+                  d_id:loca,
+                  created_by:creator ,
+
+                  doc_type:"docs",
+								}
+							};
+               
+							for(var k=0;k<=j;++k)
+							{
+									editor1.text[k]={author:"",text:arr[k],id:"1212"+(Math.floor(Math.random()*10000)+1)}
+                  
+              
+									
+							}
+							
+					
+//inner html not working as well as backend data to frontend not coming saving feature to be implmemeted like auto saving
+//some issue in saving same copy created solved by reading documentation and changing variables
+      
+      // if(isnewdoc==1)
+      // {
+      //   editor1.text=[{author:"",text:"new document",id:"1212"+(Math.floor(Math.random()*10000)+1)}]
+
+      // }
+      console.log(editor1)
+       if(isnewdoc==0)
+      {
+       
+        new realtimeEditor(editor1);
+      }
+    
+           
+    </script>
+
+    <div id="download-button" style="visibility: hidden;"></div>
+  </body>
+</html>

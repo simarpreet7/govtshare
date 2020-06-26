@@ -1,0 +1,44 @@
+{
+  "name": "authdemo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "alert-node": "^2.1.2",
+    "async": "^3.1.1",
+    "body-parser": "^1.19.0",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "http": "0.0.1-security",
+    "js-alert": "^1.0.4",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.8.11",
+    "mongoose-unique-validator": "^2.0.3",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.5.0",
+    "path": "^0.12.7",
+    "popup": "0.0.3",
+    "popups": "^1.1.3",
+    "realtime-editor": "^0.5.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^9.7.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simarpreet7/sharedocs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/simarpreet7/sharedocs/issues"
+  },
+  "homepage": "https://github.com/simarpreet7/sharedocs#readme",
+  "description": ""
+}

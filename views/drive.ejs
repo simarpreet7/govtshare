@@ -1,0 +1,843 @@
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>
+      <% var date_Today = new Date(); %>
+      <% var newObjects = 0; %>
+      <% for ( var k = 0; k  < doc_.length; k++) { %>
+        <%if( (doc_[k].date.getDate() == date_Today.getDate()) && (doc_[k].date.getMonth() == date_Today.getMonth()) && (doc_[k].date.getFullYear() == date_Today.getFullYear()) ) { %>
+          <% newObjects++; %>
+        <% } %>
+      <% } %>
+      MyDocs (<%= newObjects %>) - <%= user_name %>
+    
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../public/assets/projectLogo.ico" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../public/assets/stylesheet_drive.css"
+    />
+    <script type="text/javascript" src="../public/js/script_drive.js">
+      createEditableSelect(document.forms[0].myText);
+    </script>
+    <link
+      href="
+            https://fonts.googleapis.com/icon?family=Roboto|Patua+One|Source+Sans+Pro|Zilla+Slab|Material+Icons|Varela+Round|Open+Sans|Material+Icons+Round|Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />-->
+
+    <!--We can not use Bootstrap in our page due to 2 fundamental reasons. One, since this is a stylesheet,
+  it is infering with our own stylesheet. The entire layout goes haywire. the size in pixels is being changed -->
+  </head>
+</html>
+<body onload="viewFromPanel(2)">
+  <body>
+    <div id="header" style="z-index: 50;">
+      <div class="logo-icon">
+        <img src="../public/assets/icons_drive/logo.png" width="38px" />
+      </div>
+      <!-- <div class="logo-text" id="uname"><%= user_name %>'s Drive</div> -->
+      <div class="logo-text" id="uname">
+        <% var k = 0; %>
+        <% while(user_name[k] != '@') { %>
+          <% k++; %>
+        <% } %>
+        <%= user_name.slice(0, k)%>'s Drive
+      </div>
+
+      <div id="utility">
+        <input type="text" placeholder="Search..." id="fileSearch" required />
+        <div class="icon">
+          <img
+            src="../public/assets/icons_drive/search.png"
+            id="searchButton"
+            style="width: 32px"
+            onclick="searchQuery()"
+          />
+        </div>
+      </div>
+      <div id='logout' style="position: absolute; right: 0; top: 50%; transform: translate(-50%, -50%)">
+        <a href="/logout" style="color: #1565c0; text-decoration: none; font-size: 20px; font-family: 'Patua One', cursive;">
+          
+          <img src="../public/assets/icons_drive/logout.png" style=" position: absolute; width: 22px; right: 65px; top: 1px;"/>
+          Logout
+        </a>
+      </div>
+    </div>
+
+    <div id="quick-access" style="overflow: auto;">
+       <% var boxes = doc_.length > 5 ? 5 : doc_.length %>
+       <% for(var i = 0; i < boxes ; i++) { %>
+        <div class="quick-access-box"> <!--This part is the grid direction row-->
+        <div class="quick-access-icon">
+          <% if(doc_[i].doc_type == 'docs'){ %>
+            <div class="doc-type word" style="width: 16px; height: 20px; font-size: 12px; line-height: 20px; vertical-align: middle;">W</div>
+          <% } else{%>
+            <div class="doc-type sheets" style="width: 16px; height: 20px; font-size: 12px; line-height: 20px; vertical-align: middle;">E</div>
+          <% } %>
+        </div> 
+        <div class="quick-access-text"> <!-- This part is grid direction column-->
+          <div class="quick-access-doc-name"><a href="/word/<%= doc_[i]._id%>"><%= doc_[i].document_name %></a></div>
+          <div class="quick-access-doc-author"><%= doc_[i].created_by %></div>
+        </div>
+          <!-- <table>
+          <tbody>
+            <tr style="height: 25px; vertical-align: bottom;">
+              <td rowspan="2" style="width: 20px; vertical-align: middle;">
+                <% if(doc_[i].doc_type == 'docs'){ %>
+                  <div class="doc-type word" style="width: 20px; height: 25px; font-size: 16px; line-height: 25px; vertical-align: middle;">W</div>
+                <% } else{%>
+                  <div class="doc-type sheets" style="width: 20px; height: 25px; font-size: 16px; line-height: 25px; vertical-align: middle;">E</div>
+                <% } %>
+              </td>
+              <td>
+                <a href="/word/<%= doc_[i]._id%>"><%= doc_[i].document_name %></a>
+              </td>
+            </tr>
+            <tr style="height: 15px;">
+              <td style="font-size: 10px; vertical-align: top;">
+                 <%= doc_[i].created_by %>
+              </td>
+            </tr>
+          </tbody>
+          </table> -->
+        </div>
+      <% } %>
+    </div>
+    
+    <!-- <div id="menu">
+      <div class="new">
+        <div class="icon">
+          <img src="new.svg" width="43px" />
+        </div>
+        <div class="text">Images of 10 recent-most items</div>
+      </div>
+    </div> -->
+
+    <div id="panel" onload="viewFromPanel(1)">
+      <fieldset>
+        <span class="br"></span>
+        <!-- <div
+          class="panel-headings"
+          id="label-add-members"
+          onmouseover="onContent(8)"
+          onmouseout="outsideContent(8)"
+          onclick="viewFromPanel(8)"
+          style="z-index: 100; display: inline-flexbox;"
+        >
+          <img
+              src="../public/assets/icons_drive/add_member.png"
+              width="20px"
+              style="opacity: 0.7;"
+              draggable="false"
+          />
+          <span
+          style="width: 0px; height: 27px; border: 1px solid transparent; margin: 7px 5px 0 5px; border-radius: 1px;"
+          ></span>
+          Add Members
+        </div> -->
+        <div
+          class="panel-headings"
+          id="label-content-my-docs"
+          onmouseover="onContent(2)"
+          onmouseout="outsideContent(2)"
+          onclick="viewFromPanel(2)"
+        >
+          <img
+            src="../public/assets/icons_drive/my_docs.png"
+            width="20px"
+            style="opacity: 0.7;"
+            draggable="false"
+          />
+          <span
+            style="width: 0px; height: 27px; border: 1px solid transparent; margin: 7px 5px 0 5px; border-radius: 1px;"
+          ></span>
+          My Docs
+        </div>
+        <div
+          class="panel-headings"
+          id="label-content-create-doc"
+          onmouseover="onContent(0)"
+          onmouseout="outsideContent(0)"
+          onclick="window.location.href='/word/<%= user_name %>';"
+        >
+          <img
+              src="../public/assets/icons_drive/create_document.png"
+              width="20px"
+              style="opacity: 0.7;"
+              draggable="false"
+          />  
+          <span
+            style="width: 0px; height: 27px; border: 1px solid transparent; margin: 7px 5px 0 5px; border-radius: 1px;"
+          ></span>
+          Create Doc
+        </div>
+        <div
+        class="panel-headings"
+        id="label-content-create-sheets"
+        onmouseover="onContent(1)"
+        onmouseout="outsideContent(1)"
+        onclick="window.location.href='/sheets/<%= user_name %>';"
+        >
+          <img
+            src="../public/assets/icons_drive/create_sheets.png"
+            width="20px"
+            style="opacity: 0.7;"
+            draggable="false"
+          />
+          <span
+            style="width: 0px; height: 27px; border: 1px solid transparent; margin: 7px 5px 0 5px; border-radius: 1px;"
+          ></span>
+          Create Sheets
+        </div>
+        <!-- <div
+          class="panel-headings"
+          id="label-content-create-group"
+          onmouseover="onContent(3)"
+          onmouseout="outsideContent(3)"
+          onclick="viewFromPanel(3)"
+        >
+          <img
+            src="../public/assets/icons_drive/create_group.png"
+            width="20px"
+            style="opacity: 0.7;"
+            draggable="false"
+          />
+          <span
+            style="width: 0px; height: 27px; border: 1px solid transparent; margin: 7px 5px 0 5px; border-radius: 1px;"
+          ></span>
+          Create Group
+        </div> -->
+        <!-- <div
+          class="panel-headings"
+          id="label-content-my-groups"
+          onmouseover="onContent(4)"
+          onmouseout="outsideContent(4)"
+          onclick="viewFromPanel(4)"
+        >
+          <img
+            src="../public/assets/icons_drive/my_group.png"
+            width="20px"
+            style="opacity: 0.7;"
+            draggable="false"
+          />
+          <span
+            style="width: 0px; height: 27px; border: 1px solid transparent; margin: 7px 5px 0 5px; border-radius: 1px;"
+          ></span>
+          My Groups
+        </div> -->
+        <!-- <div
+          class="panel-headings"
+          id="label-content-recent"
+          onmouseover="onContent(5)"
+          onmouseout="outsideContent(5)"
+          onclick="viewFromPanel(5)"
+        >
+          Recent
+        </div>
+        <div
+          class="panel-headings"
+          id="label-content-important"
+          onmouseover="onContent(6)"
+          onmouseout="outsideContent(6)"
+          onclick="viewFromPanel(6)"
+        >
+          Important
+        </div>
+        <div
+          class="panel-headings"
+          id="label-content-recycle-bin"
+          onmouseover="onContent(7)"
+          onmouseout="outsideContent(7)"
+          onclick="viewFromPanel(7)"
+        >
+          Recycle Bin (v3.0)
+        </div> -->
+        
+        <!-- <p id="lock-state">Hover Mode Active</p> -->
+
+        <span class="brlarge"></span>
+        <!-- 
+        <table id="access-level-data">
+          <thead>
+            <tr>
+              <td style="width: 65px; text-align: center">Colour Code</td>
+              <td>Access Level</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div
+                  class="access-level"
+                  style="background-color: #e64a19"
+                ></div>
+              </td>
+              <td>Read Only</td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  class="access-level"
+                  style="background-color: #fdd835"
+                ></div>
+              </td>
+              <td>Write</td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  class="access-level"
+                  style="background-color: #43a047"
+                ></div>
+              </td>
+              <td>SuperUser</td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  class="access-level"
+                  style="background-color: #3498db"
+                ></div>
+              </td>
+              <td>Owner</td>
+            </tr>
+          </tbody>
+        </table> -->
+      </fieldset>
+    </div>
+
+    <div id="colour-patch"></div>
+    <div
+      id="content"
+      style="height: 100px; background-color: transparent; background-size: cover;"
+    >
+      <div
+        id="content-create-doc"
+        style="visibility: hidden; position:absolute; z-index: 2;"
+      >
+        <div id="openEditor">
+          <div
+            id="openWordEditor"
+            onclick="location.href='../Editor_Sid/index.html';"
+          >
+            Word
+          </div>
+          <div
+            id="openSheetsEditor"
+            onclick="location.href='../Editor_Sid/index.html';"
+          >
+            Sheets
+          </div>
+        </div>
+      </div>
+      <div
+        id="content-my-docs"
+        style="visibility: hidden; position:absolute; z-index: 3;"
+      >
+      <!-- starting of tables -->
+      <form action="">
+        <table>
+          <thead>
+            <tr>
+              <td style="width: 30px; text-align: center;">No.</td>
+              <td style="width: 40px; text-align: center;"></td>
+              <td style="width: auto; text-align: left; padding-left: -15px;">Document Name</td>
+              <td style="width: 125px; text-align: left; padding-left: 5px;">Created by</td>
+              <td style="width: 30px; text-align: center;">O</td>
+              <td style="width: 30px; text-align: center;">R</td>
+              <td style="width: 30px; text-align: center;">W</td>
+              <td style="width: 30px; text-align: center;">WS</td>
+              <td style="width: 135px; text-align: left; padding-left: 5px;">Created on</td>
+              <td style="width: 135px; text-align: left; padding-left: 5px;">Last Modified</td>
+              <td style="width: 45px; text-align: left; padding-left: 5px;">Size</td>
+              <td style="width: 30px;text-align: center;">
+                <img
+                  src="../public/assets/icons_drive/delete.svg"
+                  style="width: 20px;"
+                />
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <form method="GET" action="/drive/delete"> -->
+            <% for(var i = 0; i < doc_.length; i++) { %>
+              <tr>
+                <td id="noo" style="text-align: center;"><%= i+1 %></td>
+                <td style="text-align: center;">
+                  <% if(doc_[i].doc_type == 'docs'){ %>
+                    <div class="doc-type word">W</div>
+                  <% } else{ %>
+                    <div class="doc-type sheets">E</div>
+                  <% } %>
+                </td>
+                <td style="text-align: left;" name="d_name"><a href="/word/<%= doc_[i]._id %>"><%= doc_[i].document_name %></a></td>
+                <td style="text-align: left;">
+                  <% if(user_name==doc_[i].created_by) { %> 
+                    Me
+                  <% } else { %>
+                    <% var k = 0; %>
+                    <% while(doc_[i].created_by[k] != '@') { %>
+                      <% k++; %>
+                    <% } %>
+                    <%= doc_[i].created_by.slice(0, k)%>
+                  <% } %>
+                </td>
+
+                <!-- <td style="width: 125px; text-align: left; padding-left: 5px;"><%= doc_[i].mdate %></td> -->
+                
+                <% for(var j = 0; j < doc_.length; j++) { %>
+                  <% if(JSON.stringify(driver[j].doc_id)==JSON.stringify(doc_[i]._id)){ %>
+                    
+                    <% if(driver[j].permission=="r"){ %>
+                      <td style="text-align: center;"></td>
+                      <td style="text-align: center;">&#x2705</td>
+                      <td style="text-align: center;"></td>
+                      <td style="text-align: center;"></td>
+                      <% } %>    
+                      
+                      <% if(driver[j].permission=="o"){ %>
+                        <td style="text-align: center;">&#x2705</td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <% } %> 
+                        
+                        <% if(driver[j].permission=="w"){ %>
+                          <td style="text-align: center;"></td>
+                          <td style="text-align: center;"></td>
+                          <td style="text-align: center;">&#x2705</td>
+                          <td style="text-align: center;"></td>
+                          <% } %>
+                          
+                          <% if(driver[j].permission=="su"){ %>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;">&#x2705</td>
+                            <% } %> 
+                            <% break ;} %>     
+                            <% } %>   
+                            
+                            
+                            
+                            <% var monthName = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] %>
+                            <% var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; %>
+                            <td style="text-align: left;">
+                              <!-- <%= daysOfWeek[doc_[i].date.getDay()] %>,  -->
+                              <%= doc_[i].date.getDate() %>-<%= monthName[doc_[i].date.getMonth()] %>-<%= doc_[i].date.getFullYear() %>, 
+                              <%= doc_[i].date.toLocaleTimeString()%>
+                            </td>
+                            <td style="text-align: left;">
+                              <!-- <%= daysOfWeek[doc_[i].mdate.getDay()] %>,  -->
+                              <%= doc_[i].mdate.getDate() %>-<%= monthName[doc_[i].mdate.getMonth()] %>-<%= doc_[i].mdate.getFullYear() %>, 
+                              <%= doc_[i].mdate.toLocaleTimeString()%>
+                            </td>
+                            <!-- <td style="width: 125px; text-align: left; padding-left: 5px;"><%= doc_[i].mdate %></td> -->
+                            <td style="width: 45px; text-align: left; padding-left: 5px;"><%= doc_[i].name.length %> B</td>
+                            <td style="width: 50%;text-align: left;">
+                              <% if(user_name==doc_[i].created_by) { %>
+                                <a id="myAnchor-<%=i%>"  style="text-decoration: none;"  href="/drive/delete/<%= doc_[i]._id %>">&#x274C</a>
+                                <script type="text/javascript">
+                      document.getElementById("myAnchor-<%=i%>").addEventListener("click", function(event){
+                        var r = confirm("confirm deletion of this !");
+                        if (r == true) {
+                          ;
+                        } else {
+                          event.preventDefault();;
+                        }
+                        
+                            
+
+
+
+                          });
+                    </script>
+                    
+                    <% } %>    
+                  </td>
+                </tr>
+                <% } %> 
+                
+                <!-- </form> -->
+              </tbody> 
+              <!--<tfoot>
+            <tr>
+              <td><%= doc_.length %></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tfoot>-->
+        </table>
+        </form>
+      </div>
+      <div
+        id="content-create-group"
+        style="visibility: hidden; position:absolute; z-index: 4;"
+      >    
+        <div> Create Group Pane</div>
+        <span class="brmedium"></span>
+      
+        <div id="close-button"
+          style="position: absolute; right: 10px; top: 10px; z-index: 12; cursor: pointer;"
+          onclick="hideCreateGroupPane()"
+        >
+          &#x274C
+        </div>
+        <form>
+          <!-- <label for="officialName"><b>Name:</b></label>
+          <input
+            type="text"
+            placeholder="Enter Name"
+            id="officialName"
+            style="margin-left:60px;"
+            required
+          />
+          <span class="br"></span> -->
+          <label for="email"><b>Email:</b></label>
+          <input
+            type="text"
+            placeholder="Enter Email"
+            id="email-for-group"
+            style="margin-left:79px; padding: 2px;"
+            required
+          />
+          <span class="br"></span>
+          <!-- <label for="officeDept"><b>Office/Dept:</b></label>
+            <input
+            type="text"
+            placeholder="Enter Office/Dept"
+            id="officeDept"
+            style="margin-left:15px;"
+            required
+          />
+          <span class="br"></span> -->
+          <label for="group"><b>Group Name:</b></label>
+          <input
+            type="text"
+            placeholder="Enter Name of Document"
+            id="group"
+            style="margin-left:25px; padding: 2px;"
+            required
+          />
+        </form>
+          
+        <div id="add-group-member" onclick="addGroupMember()">Add</div>
+        New data is added at the top of table after pressing the add button.
+        Following is just a sample table. Table Heads may be added or reduced.
+        <table id="group-members-table-new">
+          <!-- comment %} <thead>
+             <tr>
+              <td>Official Name</td>
+              <td>Group</td>
+              <td>Office/Dept</td>
+              <td>E-Mail ID</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Siddhartha</td>
+              <td>DTU</td>
+              <td>Backend / Frontend</td>
+              <td>siddharthamaster4@gmail.com</td>
+            </tr>
+           <tr>
+              <td>Simarpreet Singh</td>
+              <td>DTU</td>
+              <td>Backend</td>
+              <td>samsingh7039@gmail.com</td>
+            </tr>
+            <tr>
+              <td>Siddhant Jain</td>
+              <td>DTU</td>
+              <td>Word Frontend</td>
+              <td>asn.siddhant@gmail.com</td>
+            </tr>
+            <tr>
+              <td>Yogesh Narang</td>
+              <td>DTU</td>
+              <td>Sheets Frontend</td>
+              <td>NA</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td id="memberCounter">Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tfoot> -->
+        </table>
+      </div>
+      <div
+        id="content-my-groups"
+        style="visibility: hidden; position:absolute; z-index: 5;"
+      >
+        For Shared by Me option. This is precisely where we add the cards for
+        all the-docs on the database We have two viewing alternatives. One is a
+        list. The other is the card layout We may go for a hybrid but not until
+        we have a meeting.
+      </div>
+      <!-- <div
+        id="content-recent"
+        style="visibility: hidden; position:absolute; z-index: 6;"
+      >
+        <table>
+          <thead>
+            <tr>
+              <td>Document Name</td>
+              <td>Creator</td>
+              <td>Date</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Word Document XYZ</td>
+              <td>Siddhartha</td>
+              <td>20 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Sheets Document ABC</td>
+              <td>Simarpreet</td>
+              <td>21 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Sheets Document EFG</td>
+              <td>Siddhant</td>
+              <td>22 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Database Document JKL</td>
+              <td>Yogesh</td>
+              <td>23 - 12 - 2019</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total 4</td>
+              <td>Nothing stated here</td>
+              <td>Nothing stated here</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div
+        id="content-important"
+        style="visibility: hidden; position:absolute; z-index: 7;"
+      >
+        <table>
+          <thead>
+            <tr>
+              <td>Document Name</td>
+              <td>Creator</td>
+              <td>Date</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Word Document XYZ</td>
+              <td>Siddhartha</td>
+              <td>20 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Sheets Document ABC</td>
+              <td>Simarpreet</td>
+              <td>21 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Sheets Document EFG</td>
+              <td>Siddhant</td>
+              <td>22 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Database Document JKL</td>
+              <td>Yogesh</td>
+              <td>23 - 12 - 2019</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total 4</td>
+              <td>Nothing stated here</td>
+              <td>Nothing stated here</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div
+        id="content-recycle-bin"
+        style="visibility: hidden; position:absolute; z-index: 8;"
+      >
+        <table>
+          <thead>
+            <tr>
+              <td>Document Name</td>
+              <td>Creator</td>
+              <td>Date</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Word Document XYZ</td>
+              <td>Siddhartha</td>
+              <td>20 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Sheets Document ABC</td>
+              <td>Simarpreet</td>
+              <td>21 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Sheets Document EFG</td>
+              <td>Siddhant</td>
+              <td>22 - 12 - 2019</td>
+            </tr>
+            <tr>
+              <td>Database Document JKL</td>
+              <td>Yogesh</td>
+              <td>23 - 12 - 2019</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total 4</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div> -->
+      <!-- <div
+        id="content-temp"
+        style="visibility: hidden; position:absolute; z-index: 9;"
+      >
+        This is just temporary. This is what we are trying to idealize. We can
+        clearly see the tables with their relavant info. The data provided here
+        is not provided from the DB, but, just like that.
+      </div> -->
+    </div>
+
+    <div id="share-selection-pane">
+      <div> Adding Members Pane</div>
+      <span class="brmedium"></span>
+      <div id="close-button"
+        style="position: absolute; right: 10px; top: 10px; z-index: 12; cursor: pointer;"
+        onclick="hideSelectionPane()"
+      >
+        &#x274C
+      </div>
+      <form>
+        <!-- <label for="officialName"><b>Name:</b></label>
+        <input
+          type="text"
+          placeholder="Enter Name"
+          id="officialName"
+          style="margin-left:60px;"
+          required
+        />
+        <span class="br"></span> -->
+        <label for="email"><b>Email:</b></label>
+        <input
+          type="text"
+          placeholder="Enter Email"
+          id="email-of-members"
+          style="margin-left:60px; padding: 2px;"
+          required
+        />
+        <!-- <span class="br"></span> -->
+        <!-- <label for="officeDept"><b>Office/Dept:</b></label>
+          <input
+          type="text"
+          placeholder="Enter Office/Dept"
+          id="officeDept"
+          style="margin-left:15px;"
+          required
+        />
+        <span class="br"></span> -->
+        <!-- <label for="group"><b>Doc Name:</b></label>
+        <input
+          type="text"
+          placeholder="Enter Name of Document"
+          id="group"
+          style="margin-left:25px;"
+          required
+        /> -->
+      </form>
+        
+      <div id="add-member" onclick="addMember()">Add</div>
+      New data is added at the top of table after pressing the add button.
+      Following is just a sample table. Table Heads may be added or reduced.
+      <table id="share-table-new">
+        <!-- comment %} <thead>
+           <tr>
+            <td>Official Name</td>
+            <td>Group</td>
+            <td>Office/Dept</td>
+            <td>E-Mail ID</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Siddhartha</td>
+            <td>DTU</td>
+            <td>Backend / Frontend</td>
+            <td>siddharthamaster4@gmail.com</td>
+          </tr>
+         <tr>
+            <td>Simarpreet Singh</td>
+            <td>DTU</td>
+            <td>Backend</td>
+            <td>samsingh7039@gmail.com</td>
+          </tr>
+          <tr>
+            <td>Siddhant Jain</td>
+            <td>DTU</td>
+            <td>Word Frontend</td>
+            <td>asn.siddhant@gmail.com</td>
+          </tr>
+          <tr>
+            <td>Yogesh Narang</td>
+            <td>DTU</td>
+            <td>Sheets Frontend</td>
+            <td>NA</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td id="memberCounter">Total</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tfoot> -->
+      </table>
+    </div>
+
+    <!-- <div id="Warning pane">
+      <p>Please type <% %> to confirm the deletion of the file named .</p>
+      <input type="text" placeholder="Search..." id="fileConfirm" required/>
+    </div> -->
+
+    <div id="footer">
+      <p>
+        <span style="position: absolute; left: 5px;">
+          &copy; 2019. ShareDocs Word Editor,</span
+        >
+        <span style="position: absolute; right: 15px;">
+          Works best with Google Chrome
+        </span>
+      </p>
+    </div>
+  </body>
+</body>
