@@ -1,11 +1,15 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 var connectingschema = new mongoose.Schema({
-  
     doc_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'document'
     },
+    sheet_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Sheet'
+    },
+    doc_type : {type : String, default : "docs"},
     date: { type: Date ,default:Date.now},
     user_id:String,
     permission:{ type: String, default: "o" },

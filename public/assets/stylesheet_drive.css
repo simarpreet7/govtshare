@@ -23,13 +23,13 @@
     /* Track */
     ::-webkit-scrollbar-track {
         background: #f6f6f6;
-        border-radius: 2px;
+        border-radius: 5px;
     }
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
         background: steelblue;
-        border-radius: 2px;
+        border-radius: 5px;
     }
 
     /* Handle on hover */
@@ -211,7 +211,7 @@
         /* background-color: #1976d2; */
         position: fixed;
         left: 0;
-        top: 131px;
+        top: 156px;
         bottom: 36px;
         height: 100%;
         /* border: 1px solid #dddddd; */
@@ -224,7 +224,7 @@
         font-weight: 400;
         padding: 5px;
         padding-left: 13px;
-        font-size: 14px;
+        font-size: 16px;
         height: 24px;
         line-height: 24px;
         vertical-align: middle;
@@ -248,7 +248,7 @@
     }
 
     #panel .panel-headings:hover {
-        font-size: 16px;
+        font-size: 20px;
         margin-right: 5px;
         background-color: #e6e6e6;
         border: 2px solid #e6e6e6;
@@ -449,58 +449,23 @@
         box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
         /* background-image: linear-gradient(to top, yellowgreen, #388e3c 30%); */
         z-index: 49;
-        height: 72px;
-        display: flex;
-        flex-direction: row;
+        height: 97px;
     }
 
-    .quick-access-box {
+    #quick-access-box {
         width: auto;
-        /* max-width: 350px; */
         min-width: 150px;
-        height: 45px;
+        height: 60px;
         border: none;
-        border-radius: 5px;
+        border-radius: 10px;
         background-color: white;
-        display: flex;
-        flex-direction: row;
+        display: inline-block;
         margin-top: 13px;
         margin-left: 13px;
     }
 
-    .quick-access-icon {
-        /* height: 50px; */
-        width: 25px;
-        justify-content: center;
-        align-content: center;
-        padding-top: 12px;
-        padding-left: 7px;
-    }
-
-    .quick-access-text {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-content: flex-start;
-    }
-
-    .quick-access-doc-name>a {
-        text-decoration: none;
-        font-size: 14px;
-        font-variant: 400;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #1e88e5;
-    }
-
-    .quick-access-doc-author {
-        text-decoration: none;
-        font-size: 10px;
-        color: black;
-    }
-
-
     #content {
-        margin-top: 129px;
+        margin-top: 154px;
         margin-bottom: 35px;
         margin-left: 220px;
         color: black;
@@ -602,12 +567,12 @@
         /* font-size: 20px; */
     }
 
-    /* #quick-access-box table {
+    #quick-access-box table {
         width: auto;
         min-width: 175px;
         margin-top: 0;
         margin-left: 0;
-        //height: 40px;
+        /* height: 40px; */
         border: none;
         border-radius: 10px;
         box-shadow: 0 0 0 0 transparent;
@@ -615,7 +580,7 @@
 
     #quick-access-box table tr td {
         border-top: none;
-        //height: 30px;
+        /* height: 30px; */
         padding: auto;
     }
 
@@ -628,7 +593,7 @@
     }
 
     #quick-access-box table tr td a {
-        //height: 40px;
+        /* height: 40px; */
         border-top: none;
         padding: auto;
         text-decoration: none;
@@ -646,7 +611,7 @@
 
     #quick-access-box table tr td a:visited {
         color: darkgreen;
-    } */
+    }
 
     #share-selection-pane table {
         width: 90%;
@@ -693,7 +658,7 @@
 
     tbody tr td {
         padding: 5px;
-        font-size: 10px;
+        font-size: 12px;
         height: 32px;
         font-family: 'Varela Round', sans-serif;
         text-align: left;
@@ -707,12 +672,11 @@
         /* background-color: steelblue;
         color: white; */
         /* background-color: white; */
-        /* font-family: 'Roboto', sans-serif; */
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: 'Roboto', sans-serif;
         color: black;
         /* color: white; */
         /* background-color: lightskyblue; */
-        font-size: 12px;
+        font-size: 14px;
         text-align: left;
     }
 
@@ -823,7 +787,7 @@
 
     #colour-patch {
         position: fixed;
-        top: 129px;
+        top: 154px;
         left: 222px;
         width: 100%;
         height: 125px;

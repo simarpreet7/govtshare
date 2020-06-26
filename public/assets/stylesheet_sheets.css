@@ -164,7 +164,7 @@
         /* left: 0px; */
         width: auto;
         left: 50%;
-        transform: translate(-50%, 0%) scale(0.8);
+        transform: translate(-50%, 0%);
         height: 40px;
         border: none;
         /* border-top: 3px solid #3498db; */
@@ -546,3 +546,4 @@
         grid-column: 10;
     }*/
 }
+
