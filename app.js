@@ -1,5 +1,8 @@
 //rename issue
 //reload issue after share //i.e. you save theen share
+// This is the first time Siddhartha is writing a comment
+
+// This is the second time Siddhartha is writing a comment
 
 var express = require('express');
 app = express(),
@@ -20,7 +23,7 @@ var mongoose = require("mongoose"),
   passportLocalMongoose = require("passport-local-mongoose"),
   sheet = require("./models/Sheet");
 
-  app.use('/node_modules/handsontable/dist', express.static('./node_modules/handsontable/dist'));
+app.use('/node_modules/handsontable/dist', express.static('./node_modules/handsontable/dist'));
 
 realtimeEditor.onSave(function (data) {
   console.log('realtimeEditor.onSave: ', data);
@@ -38,7 +41,7 @@ realtimeEditor.onSave(function (data) {
       _id: x
     }, {
       name: data_,
-      mdate:new Date()
+      mdate: new Date()
     }, {
       upsert: true
     },
@@ -134,11 +137,11 @@ app.get("/drive/:id", isLoggedIn, function (req, res) {
         var sheeta = new Array();
 
         for (var i = 0; i < c.length; ++i) {
-          if(c[i].doc_type == "docs"){
+          if (c[i].doc_type == "docs") {
             _document.find({
                 _id: c[i].doc_id
               },
-              function(err, docs){
+              function (err, docs) {
                 doca.push(docs[0]);
 
                 if (doca.length == c.length) {
@@ -149,13 +152,13 @@ app.get("/drive/:id", isLoggedIn, function (req, res) {
                     driver: c,
                   });
                   // return res.send(doca)
-                }                
+                }
               }
             );
           } else {
             sheet.find({
-              _id: c[i].sheet_id
-            },
+                _id: c[i].sheet_id
+              },
               function (err, docs) {
                 doca.push(docs[0]);
                 if (doca.length == c.length) {
@@ -170,8 +173,8 @@ app.get("/drive/:id", isLoggedIn, function (req, res) {
               }
             );
           }
-          
-          
+
+
         }
       }
     }
@@ -181,48 +184,48 @@ app.get("/drive/:id", isLoggedIn, function (req, res) {
 
 app.get("/drive/delete/:doc_type/:id", isLoggedIn, function (req, res) {
   var doc_type = req.params.doc_type;
-  
+
   if (doc_type == "sheets") {
     sheet.deleteOne({
-      _id: req.params.id
-    },
+        _id: req.params.id
+      },
       function (err) {
-        if(err){
+        if (err) {
           console.log(err);
         } else {
           drivemodel.deleteMany({
-            sheet_id: req.params.id
-          },
+              sheet_id: req.params.id
+            },
             function (err) {
-              if(err){
+              if (err) {
                 console.log(err);
               } else {
                 res.redirect("/drive/" + req.user.username);
               }
-             
+
             });
         }
-        
+
       }
     );
   } else {
     _document.deleteOne({
-      _id: req.params.id
-    },
+        _id: req.params.id
+      },
       function (err) {
-        if(err){
+        if (err) {
           console.log(err);
         } else {
           drivemodel.deleteMany({
-            doc_id: req.params.id
-          },
+              doc_id: req.params.id
+            },
             function (err) {
-              if(err) {
+              if (err) {
                 cpnsole.log(err);
               } else {
-                res.redirect("/drive/" + req.user.username);  
+                res.redirect("/drive/" + req.user.username);
               }
-              
+
             });
         }
       }
@@ -233,40 +236,40 @@ app.get("/drive/delete/:doc_type/:id", isLoggedIn, function (req, res) {
 });
 
 app.get("/sheets/:id", isLoggedIn, function (req, res) {
-  if(req.user.username == req.params.id){
+  if (req.user.username == req.params.id) {
     res.render("sheets", {
-       id: req.params.id, 
-       rid : req.user.username,
-       doc : undefined,
-       x : 0,
-       y : 0
-      }); 
+      id: req.params.id,
+      rid: req.user.username,
+      doc: undefined,
+      x: 0,
+      y: 0
+    });
   } else {
-    sheet.findById(req.params.id, function(err, doc){
-      if(err){
+    sheet.findById(req.params.id, function (err, doc) {
+      if (err) {
         console.log(err);
         //Handle error if the given sheet is not found in database
       } else {
         var obj = JSON.stringify(doc);
-        if(req.user.username == doc.created_b){ //o
+        if (req.user.username == doc.created_b) { //o
           drivemodel.find({
-            sheet_id : req.params.id
-          }, function(err, share){
-              res.render("sheets", {
-                _share: share,
-                id: req.params.id,
-                rid: req.user.username,
-                doc: obj,
-                x: 0,
-                y: 1
-              });
+            sheet_id: req.params.id
+          }, function (err, share) {
+            res.render("sheets", {
+              _share: share,
+              id: req.params.id,
+              rid: req.user.username,
+              doc: obj,
+              x: 0,
+              y: 1
+            });
           });
         } else {
           drivemodel.find({
             sheet_id: req.params.id,
             user_id: req.user.username
-          }, function(err, docs){
-            if(docs[0].permission === "r"){ // r
+          }, function (err, docs) {
+            if (docs[0].permission === "r") { // r
               res.render("sheets", {
                 id: req.params.id,
                 rid: req.user.username,
@@ -274,7 +277,7 @@ app.get("/sheets/:id", isLoggedIn, function (req, res) {
                 x: 0,
                 y: -1
               });
-            } else if(docs[0].permission === "w"){  // w
+            } else if (docs[0].permission === "w") { // w
               res.render("sheets", {
                 id: req.params.id,
                 rid: req.user.username,
@@ -282,31 +285,31 @@ app.get("/sheets/:id", isLoggedIn, function (req, res) {
                 x: 0,
                 y: 0
               });
-            } else { 
+            } else {
               drivemodel.find({ // s
                 sheet_id: req.params.id
-              }, function(err, share){
-                  res.render("sheets", {
-                    _share: share,
-                    id: req.params.id,
-                    rid: req.user.username,
-                    doc: obj,
-                    x: 0,
-                    y: 1
-                  });
+              }, function (err, share) {
+                res.render("sheets", {
+                  _share: share,
+                  id: req.params.id,
+                  rid: req.user.username,
+                  doc: obj,
+                  x: 0,
+                  y: 1
+                });
               });
             }
           });
-        } 
+        }
 
       }
     });
   }
 });
 
-app.post("/sheets/:id", isLoggedIn,  function(req, res){
+app.post("/sheets/:id", isLoggedIn, function (req, res) {
   console.log("POST ROUTE");
-  
+
   var data = JSON.parse(req.body.data);
   var name = "";
   var arr = [];
@@ -326,103 +329,102 @@ app.post("/sheets/:id", isLoggedIn,  function(req, res){
     }
   }
 
-  if(req.params.id == req.user.username){
-        console.log("New Sheet");
-        var new_sheet = new sheet({
-          document_name: data.save_fname,
-          created_by: req.user.username,
-        });
-        
-        new_sheet.name = name;
-        new_sheet.contentCells = arr;
-
-        new_sheet.save(function(err, sheet){
-          if(err)
-            console.log(err);
-          else {
-            var new_drive = new drivemodel({
-              doc_type: "sheets",
-              sheet_id: sheet._id,
-              user_id: req.user.username,
-              document_name: data.save_fname
-            });
-
-            drivemodel.findOne({
-              doc_type: "sheets",
-              document_name: data.save_fname,
-              user_id: req.user.username
-            },
-              function (err, doc) {
-                //doc exist
-                if (_.isEmpty(doc)) {
-                  new_drive.save(function (err) {
-                    res.send("EVERYTHING DONE");
-                  });
-                } else {
-                  sheet.deleteOne({
-                    _id: new_drive.doc_id
-                  },
-                    function (err) {
-                      //Error handling logic if same name sheet already exists
-                      //  res.send("doc already exists"); //doc already exist
-                    });
-                }
-              });
-          }
-        });
-  } else {
-     // Updation of data without socket
-     console.log(req.body);
-     drivemodel.findOneAndUpdate({
-       user_id: req.user.username,
-       sheet_id : req.params.id
-     }, {
-       document_name: data.save_fname
-     },
-     { 
-      upsert: true,
-      runValidators: true,
-      context: "query"
-     }, 
-    function(err, doc){
-      if(err) {
-        //Document with same name exist
-        res.render("sheets", {
-          id: req.params.id,
-          rid: req.user.username,
-          doc: obj,
-          x: 1,
-          y: 0
-        });
-
-      } else {
-        sheet.findOneAndUpdate({
-          _id: req.params.id
-        }, {
-          document_name: data.save_fname,
-          contentCells: arr,
-          name: name,
-          mdate: new Date()
-        }, function (err, doc) {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log("SUCCESSFUL UPDATION");
-            res.send("UPDATION DONE");
-          }
-        });
-      } 
+  if (req.params.id == req.user.username) {
+    console.log("New Sheet");
+    var new_sheet = new sheet({
+      document_name: data.save_fname,
+      created_by: req.user.username,
     });
-     
+
+    new_sheet.name = name;
+    new_sheet.contentCells = arr;
+
+    new_sheet.save(function (err, sheet) {
+      if (err)
+        console.log(err);
+      else {
+        var new_drive = new drivemodel({
+          doc_type: "sheets",
+          sheet_id: sheet._id,
+          user_id: req.user.username,
+          document_name: data.save_fname
+        });
+
+        drivemodel.findOne({
+            doc_type: "sheets",
+            document_name: data.save_fname,
+            user_id: req.user.username
+          },
+          function (err, doc) {
+            //doc exist
+            if (_.isEmpty(doc)) {
+              new_drive.save(function (err) {
+                res.send("EVERYTHING DONE");
+              });
+            } else {
+              sheet.deleteOne({
+                  _id: new_drive.doc_id
+                },
+                function (err) {
+                  //Error handling logic if same name sheet already exists
+                  //  res.send("doc already exists"); //doc already exist
+                });
+            }
+          });
+      }
+    });
+  } else {
+    // Updation of data without socket
+    console.log(req.body);
+    drivemodel.findOneAndUpdate({
+        user_id: req.user.username,
+        sheet_id: req.params.id
+      }, {
+        document_name: data.save_fname
+      }, {
+        upsert: true,
+        runValidators: true,
+        context: "query"
+      },
+      function (err, doc) {
+        if (err) {
+          //Document with same name exist
+          res.render("sheets", {
+            id: req.params.id,
+            rid: req.user.username,
+            doc: obj,
+            x: 1,
+            y: 0
+          });
+
+        } else {
+          sheet.findOneAndUpdate({
+            _id: req.params.id
+          }, {
+            document_name: data.save_fname,
+            contentCells: arr,
+            name: name,
+            mdate: new Date()
+          }, function (err, doc) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("SUCCESSFUL UPDATION");
+              res.send("UPDATION DONE");
+            }
+          });
+        }
+      });
+
   }
 });
 
-app.post("/sheets/add/:id", isLoggedIn, function(req, res){
+app.post("/sheets/add/:id", isLoggedIn, function (req, res) {
   //check if user exists
   User.find({
     username: req.body.etext
-  }, function(err, user){
-    if(_.isEmpty(user)){
+  }, function (err, user) {
+    if (_.isEmpty(user)) {
       return res.send("username doesn't exists");
     }
     var new__drive = new drivemodel({
@@ -433,8 +435,8 @@ app.post("/sheets/add/:id", isLoggedIn, function(req, res){
       doc_type: "sheets"
     });
 
-    new__drive.save(function(err){
-      if(err){
+    new__drive.save(function (err) {
+      if (err) {
         //Handle error
       }
 
@@ -443,13 +445,13 @@ app.post("/sheets/add/:id", isLoggedIn, function(req, res){
   });
 });
 
-app.get("/sheets/add/:userd/delete/:id", isLoggedIn, function(req, res){
+app.get("/sheets/add/:userd/delete/:id", isLoggedIn, function (req, res) {
 
   drivemodel.deleteOne({
     user_id: req.params.userd,
     sheet_id: req.params.id
-  }, function(err){
-    if(err){
+  }, function (err) {
+    if (err) {
       //Handle error
     }
     res.redirect("/sheets/" + req.params.id);
@@ -572,7 +574,7 @@ app.post("/word/:id", isLoggedIn, function (req, res) {
       name: req.body.fname, //doc data
       created_by: req.user.username,
       document_name: req.body.save_fname
-     
+
     });
     new__document.save(function (err) {
       var new_drive = new drivemodel({
@@ -677,7 +679,7 @@ app.post("/word/:id", isLoggedIn, function (req, res) {
             }, {
               name: req.body.fname,
               document_name: req.body.save_fname,
-               mdate:new Date()
+              mdate: new Date()
             }, {
               upsert: true
             },
