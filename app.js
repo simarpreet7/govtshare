@@ -311,18 +311,19 @@ app.post("/sheets/:id", isLoggedIn, function (req, res) {
   console.log("POST ROUTE");
 
   var data = JSON.parse(req.body.data);
+  var cellMeta = data.cellMeta;
+  console.log(data, cellMeta);
   var name = "";
   var arr = [];
   for (var i = 0; i < data.data.length; ++i) {
     for (var j = 0; j < data.data[i].length; ++j) {
       if (data.data[i][j]) {
-        console.log(data.data[i][j]);
         name += data.data[i][j];
         var obj = {
           row: i,
           col: j,
           value: data.data[i][j],
-          properties: []
+          properties: cellMeta[i][j]
         }
         arr.push(obj);
       }
@@ -351,10 +352,10 @@ app.post("/sheets/:id", isLoggedIn, function (req, res) {
         });
 
         drivemodel.findOne({
-            doc_type: "sheets",
-            document_name: data.save_fname,
-            user_id: req.user.username
-          },
+          doc_type: "sheets",
+          document_name: data.save_fname,
+          user_id: req.user.username
+        },
           function (err, doc) {
             //doc exist
             if (_.isEmpty(doc)) {
@@ -363,8 +364,8 @@ app.post("/sheets/:id", isLoggedIn, function (req, res) {
               });
             } else {
               sheet.deleteOne({
-                  _id: new_drive.doc_id
-                },
+                _id: new_drive.doc_id
+              },
                 function (err) {
                   //Error handling logic if same name sheet already exists
                   //  res.send("doc already exists"); //doc already exist
@@ -375,13 +376,13 @@ app.post("/sheets/:id", isLoggedIn, function (req, res) {
     });
   } else {
     // Updation of data without socket
-    console.log(req.body);
     drivemodel.findOneAndUpdate({
-        user_id: req.user.username,
-        sheet_id: req.params.id
-      }, {
-        document_name: data.save_fname
-      }, {
+      user_id: req.user.username,
+      sheet_id: req.params.id
+    }, {
+      document_name: data.save_fname
+    },
+      {
         upsert: true,
         runValidators: true,
         context: "query"
