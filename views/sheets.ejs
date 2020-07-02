@@ -350,6 +350,7 @@
 <script type="text/javascript" src="../public/js/myscripts.js"></script>
 <script>
     if (doc != undefined) {
+        console.log("Load");
         document.getElementById('doc_name').innerHTML = doc.document_name;
         var arr = [];
         for (var i = 0; i < 40; ++i) {
@@ -362,19 +363,22 @@
             var c = content[i].col;
             arr[r][c] = content[i].value;
         }
-        console.log(arr);
         dataSaved = arr;
 
-        console.log("Load");
         hot.loadData(dataSaved);
         data = dataSaved;
+
+        for (var i = 0; i < content.length; ++i) {
+            var r = content[i].row;
+            var c = content[i].col;
+            hot.setCellMeta(r, c, 'className', content[i].properties);
+        }
         hot.render();
     }
 
-    if(y == -1){
-        hot.updateSettings({ readOnly: true }); 
+    if (y == -1) {
+        hot.updateSettings({ readOnly: true });
     }
 </script>
-
 
 </html>
