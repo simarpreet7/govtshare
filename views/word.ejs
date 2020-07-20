@@ -926,7 +926,9 @@
                 <td style="text-align: center;"></td>
                 <td style="text-align: center;"></td>
                 <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                  <% if( _share[i].user_id !=user_name){ %>
                   <td style="text-align: center;">      <a id="myAnchor-<%=i%>"  style="text-decoration: none;"  href="/word/add/<%= _share[i].user_id %>/delete/<%= doc_text._id %>">&#x274C</a></td>
+                  <% } %> 
               <% } %> 
              
             </tr>
@@ -1029,8 +1031,8 @@
 							}
 							
 						console.log(editor1)
-//inner html not working as well as backend data to frontend not coming saving feature to be implmemeted like auto saving
-//some issue in saving same copy created solved by reading documentation and changing variables
+//inner html not working as well 
+
 			new realtimeEditor(editor1);
 				
 		</script>

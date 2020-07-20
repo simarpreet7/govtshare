@@ -1,8 +1,6 @@
 //rename issue
-//reload issue after share //i.e. you save theen share
-// This is the first time Siddhartha is writing a comment
+//delete issue doc deleted
 
-// This is the second time Siddhartha is writing a comment
 
 var express = require('express');
 app = express(),
