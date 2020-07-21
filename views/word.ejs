@@ -954,7 +954,43 @@
       alert("<%= doc_text.document_name %> name already exist try another!");
     </script>
     <% } %>
-   <!-- sockets scripts -->
+   
+   <!-- connection lost update -->
+    <script>
+		
+			document.onkeydown = function (e) {
+				e = e || window.event;
+			
+				console.log(e.keyCode)
+
+				if(e.keyCode==8){
+		
+					
+					 return false;
+				
+				}
+				
+			};
+	
+		</script>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    <!-- sockets scripts -->
+
+
+
+
+
+
+
     <script src="../public/socket.io-client/dist/socket.io.min.js"></script>
 		<script src="../public/realtime-editor/realtime-editor.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
